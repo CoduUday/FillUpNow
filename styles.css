@@ -161,3 +161,23 @@ li {
   background-repeat: no-repeat;
   border: 2px solid gray;
 }
+
+.follow{
+  display: flex;
+  gap: 10px;
+}
+.icons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.icons a svg{
+  position: relative;
+  top: 3.5px;
+}
+#Instagram{
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background-color: rgb(193, 30, 30);
+}
