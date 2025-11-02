@@ -1,3 +1,7 @@
+*{
+  padding: 0;
+  margin: 0;
+}
 li a {
     float: left;
 }
@@ -11,4 +15,21 @@ li{
 li a :hover{
     background-color: chartreuse;
     
+}
+.backgroundimage{
+  display: flex;
+  justify-items: center;
+  align-items: center;
+
+}
+.background{
+  
+  background-image: url("BackgroundImage.png");
+  width: 95vw;
+  height:85vh;
+  border-radius: 35px 35px 35px 35px;
+  margin:10px 30px;
+  margin-left: 37px;
+  background-repeat: no-repeat;
+  border: 2px solid gray;
 }
