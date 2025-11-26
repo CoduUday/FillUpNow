@@ -251,11 +251,17 @@ li {
 .booknow button {
     position: relative;
     left: 100px;
+    top: 10px;
     background-color: #e74c3c;
     color: #ffffff;
     padding: 8px 18px;
     border-radius: 5px;
     transition: background-color 0.3s;
+    border: none;
+    
+}
+.booknow button:hover{
+    cursor: pointer;
 }
 
 
