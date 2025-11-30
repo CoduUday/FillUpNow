@@ -1,89 +1,631 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FillUpNow</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
+    <title>FillUpNow - Smart CNG Booking</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
+            background: linear-gradient(135deg, #66baea 0%, #34d030 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-brand {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .nav-link {
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 8px 16px;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .cta-btn {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: #ffffff;
+            padding: 10px 24px;
+            border-radius: 25px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 90vh;
+            
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .hero::before {
+            min-width: 80vw;
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 10px;
+            right: 10px;
+            bottom: 0;
+            background: url("BackgroundImage.png");
+            background-size: cover;
+            border-radius: 10px;
+            /* animation: wave 15s ease-in-out infinite; */
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text {
+            color: white;
+            padding: 10px;
+          
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            animation: fadeInUp 1s ease;
+            color: black;
+        }
+
+        .hero-text p {
+            color: black;
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-icon:hover {
+            transform: translateY(-5px) scale(1.1);
+        }
+
+        .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+        .twitter { background: #000; }
+        .facebook { background: #1877f2; }
+        .youtube { background: #ff0000; }
+
+        .hero-cta {
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(46, 204, 113, 0.6);
+        }
+
+        /* Booking Card */
+
+        .booking-card {
+            
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .booking-card.show {
+            display: block;
+        }
+
+        .booking-card h2 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .price-display {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.3rem;
+            font-weight: bold;
+        }
+
+        .station-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .station-info p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        /* Credits Section */
+        .credits {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .credits span {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            color: #2ecc71;
+            margin-bottom: 20px;
+        }
+
+        .modal-content p {
+            color: #555;
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .btn-close {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            margin-top: 20px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .btn-close:hover {
+            background: #c0392b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                flex-direction: column;
+                background: rgba(44, 62, 80, 0.98);
+                backdrop-filter: blur(10px);
+                padding: 20px;
+                gap: 15px;
+                transition: left 0.3s;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-text p {
+                font-size: 1.1rem;
+            }
+
+            .credits span {
+                display: block;
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
 <body>
     <header>
         <nav class="navbar">
-            <a href="#" class="nav-brand">FillUpNow</a>
-
-            <span class="hamburger"></span>
-            </label>
-
-            <ul class="nav-menu">
-                <li><a href="#" class="nav-link active">Home</a></li>
-                <li><a href="#" class="nav-link">about us</a></li>
-                <li><a href="#" class="nav-link">contact us</a></li>
+            <a href="#" class="nav-brand">⚡ FillUpNow</a>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="nav-link">Home</a></li>
+                <li><a href="#" class="nav-link">About Us</a></li>
+                <li><a href="#" class="nav-link">Contact Us</a></li>
                 <li><a href="#" class="nav-link cta-btn">Sign Up</a></li>
             </ul>
         </nav>
     </header>
-    <main>
-        <div class="backgroundimage">
-            <div class="background">
-                <div class="follow">
-                    <div class="icons" id="Instagram">
-                        <a href="https://www.instagram.com/rox_dragon_ff/?utm_source=qr&igsh=MXA4cGE5a2FwaXNrYw%3D%3D#" target="_main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                color="white" fill="none">
-                                <path
-                                    d="M2.5 12C2.5 7.52166 2.5 5.28249 3.89124 3.89124C5.28249 2.5 7.52166 2.5 12 2.5C16.4783 2.5 18.7175 2.5 20.1088 3.89124C21.5 5.28249 21.5 7.52166 21.5 12C21.5 16.4783 21.5 18.7175 20.1088 20.1088C18.7175 21.5 16.4783 21.5 12 21.5C7.52166 21.5 5.28249 21.5 3.89124 20.1088C2.5 18.7175 2.5 16.4783 2.5 12Z"
-                                    stroke="#FFFFFF" stroke-width="1.5" stroke-linejoin="round" />
-                                <path
-                                    color="white" d="M16.5 12C16.5 14.4853 14.4853 16.5 12 16.5C9.51472 16.5 7.5 14.4853 7.5 12C7.5 9.51472 9.51472 7.5 12 7.5C14.4853 7.5 16.5 9.51472 16.5 12Z"
-                                    stroke="#FFFFFF" stroke-width="1.5" />
-                                <path d="M17.5078 6.5L17.4988 6.5" stroke="#FFFFFF" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg></a>
-                    </div>
-                    <div class="icons" id="Twitter">
-                        <a href="https://x.com/HimanshuR60851?t=PRwWfe6tzcjljHHXpZGRyw&s=08" target="_main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                color="white" fill="none">
-                                <path
-                                    d="M3 21L10.5484 13.4516M21 3L13.4516 10.5484M13.4516 10.5484L8 3H3L10.5484 13.4516M13.4516 10.5484L21 21H16L10.5484 13.4516"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                    stroke-linejoin="round"></path>
-                            </svg></a>
-                    </div>
-                    <div class="icons" id="Facebook">
-                        <a href=""><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                color="white" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M6.18182 10.3333C5.20406 10.3333 5 10.5252 5 11.4444V13.1111C5 14.0304 5.20406 14.2222 6.18182 14.2222H8.54545V20.8889C8.54545 21.8081 8.74951 22 9.72727 22H12.0909C13.0687 22 13.2727 21.8081 13.2727 20.8889V14.2222H15.9267C16.6683 14.2222 16.8594 14.0867 17.0631 13.4164L17.5696 11.7497C17.9185 10.6014 17.7035 10.3333 16.4332 10.3333H13.2727V7.55556C13.2727 6.94191 13.8018 6.44444 14.4545 6.44444H17.8182C18.7959 6.44444 19 6.25259 19 5.33333V3.11111C19 2.19185 18.7959 2 17.8182 2H14.4545C11.191 2 8.54545 4.48731 8.54545 7.55556V10.3333H6.18182Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
-                            </svg></a>
-                    </div>
-                    <div class="icons" id="Youtube">
-                        <a href="https://youtube.com/@roxdragonff?si=dEYXiiaCplcl4PWq" target="_main"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
-                                color="white" fill="none">
-                                <path
-                                    d="M12 20.5C13.8097 20.5 15.5451 20.3212 17.1534 19.9934C19.1623 19.5839 20.1668 19.3791 21.0834 18.2006C22 17.0221 22 15.6693 22 12.9635V11.0365C22 8.33073 22 6.97787 21.0834 5.79937C20.1668 4.62088 19.1623 4.41613 17.1534 4.00662C15.5451 3.67877 13.8097 3.5 12 3.5C10.1903 3.5 8.45489 3.67877 6.84656 4.00662C4.83766 4.41613 3.83321 4.62088 2.9166 5.79937C2 6.97787 2 8.33073 2 11.0365V12.9635C2 15.6693 2 17.0221 2.9166 18.2006C3.83321 19.3791 4.83766 19.5839 6.84656 19.9934C8.45489 20.3212 10.1903 20.5 12 20.5Z"
-                                    stroke="currentColor" stroke-width="1.5"></path>
-                                <path
-                                    d="M15.9621 12.3129C15.8137 12.9187 15.0241 13.3538 13.4449 14.2241C11.7272 15.1705 10.8684 15.6438 10.1728 15.4615C9.9372 15.3997 9.7202 15.2911 9.53799 15.1438C9 14.7089 9 13.8059 9 12C9 10.1941 9 9.29112 9.53799 8.85618C9.7202 8.70886 9.9372 8.60029 10.1728 8.53854C10.8684 8.35621 11.7272 8.82945 13.4449 9.77593C15.0241 10.6462 15.8137 11.0813 15.9621 11.6871C16.0126 11.8933 16.0126 12.1067 15.9621 12.3129Z"
-                                    stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
-                            </svg></a>
-                    </div>
-                </div>
-                <div class="name">~Himanshu Rajput</div>
-                <div class="name">~UdaySinh Lawand</div>
-                <div class="name">~Parth Dhoomketu</div>
-                <div class="name">~Vishwajeet Kumar</div>
-                <div class="name">~Jay Joshi</div>
-                <div class="heading">
-                    <h1>“Skip the queue. Book,<br> confirm, and fuel smarter.”</h1>
-                 
-                </div>
-                  <div class="booknow">   <button>Book Now</button></div>
-            </div>
-        </div>
-      
-    </main>
-</body>
 
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Skip the Queue.<br>Book, Confirm,<br>Fuel Smarter.</h1>
+                    <p>Pre-book your CNG slot and save time at the pump. Real-time availability, instant confirmation.</p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/rox_dragon_ff/" target="_blank" class="social-icon instagram">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="https://x.com/HimanshuR60851" target="_blank" class="social-icon twitter">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="white">
+                                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-icon facebook">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="https://youtube.com/@roxdragonff" target="_blank" class="social-icon youtube">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="white">
+                                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <div class="hero-cta">
+                        <button class="btn-primary" onclick="document.getElementById('booking-section').scrollIntoView({behavior: 'smooth'})">
+                            Book Your Slot Now →
+                        </button>
+                    
+                    </div>
+                </div>
+
+                <div class="booking-card" id="booking-section">
+                    <h2>🚗 Quick Booking</h2>
+                    <form id="bookingForm">
+                        <div class="form-group">
+                            <label>Select Station</label>
+                            <select id="station" required>
+                                <option value="">Choose a station...</option>
+                                <option value="station1" data-price="70" data-wait="5">Hindustan Petroleum Corporation Limited - 0.5 km</option>
+                                <option value="station2" data-price="72" data-wait="10">Tuljabhavani Bharat Petroleum And CNG - 1 km</option>
+                                <option value="station3" data-price="68" data-wait="3">Hindustan Petroleum Corporation Limited - 1.3 km</option>
+                                <option value="station4" data-price="71" data-wait="8">Indian Oil - 1.9 km</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>CNG Amount (kg)</label>
+                            <input type="number" id="amount" min="1" max="50" value="5" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Date & Time</label>
+                            <input type="datetime-local" id="datetime" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Vehicle Number</label>
+                            <input type="text" id="vehicle" placeholder="e.g., MH-01-AB-1234" required>
+                        </div>
+
+                        <div class="price-display" id="priceDisplay">
+                            Select station to see price
+                        </div>
+
+                        <div class="station-info" id="stationInfo" style="display: none;">
+                            <p><strong>📍 Distance:</strong> <span id="distance"></span></p>
+                            <p><strong>⏱️ Est. Wait Time:</strong> <span id="waitTime"></span> mins</p>
+                            <p><strong>✅ Availability:</strong> <span style="color: #2ecc71;">Open Now</span></p>
+                        </div>
+
+                        <button type="submit" class="btn-primary" style="width: 100%; margin-top: 20px;">
+                            Confirm Booking
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <div class="credits">
+            <span>~ Himanshu Rajput</span>
+            <span>~ UdaySinh Lawand</span>
+            <span>~ Parth Dhoomketu</span>
+            <span>~ Vishwajeet Kumar</span>
+            <span>~ Jay Joshi</span>
+        </div>
+    </main>
+
+    <div class="modal" id="confirmationModal">
+        <div class="modal-content">
+            <h2>🎉 Booking Confirmed!</h2>
+            <p><strong>Booking ID:</strong> <span id="bookingId"></span></p>
+            <p><strong>Station:</strong> <span id="modalStation"></span></p>
+            <p><strong>Amount:</strong> <span id="modalAmount"></span> kg</p>
+            <p><strong>Total Price:</strong> ₹<span id="modalPrice"></span></p>
+            <p><strong>Date & Time:</strong> <span id="modalDateTime"></span></p>
+            <p><strong>Vehicle:</strong> <span id="modalVehicle"></span></p>
+            <p style="margin-top: 20px; color: #2ecc71; font-weight: bold;">
+                Please arrive 5 minutes before your slot time.
+            </p>
+            <button class="btn-close" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('navMenu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // Set minimum datetime to now
+        const datetimeInput = document.getElementById('datetime');
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+        datetimeInput.min = now.toISOString().slice(0, 16);
+        datetimeInput.value = now.toISOString().slice(0, 16);
+
+        // Price calculation
+        const stationSelect = document.getElementById('station');
+        const amountInput = document.getElementById('amount');
+        const priceDisplay = document.getElementById('priceDisplay');
+        const stationInfo = document.getElementById('stationInfo');
+
+        function updatePrice() {
+            const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+            if (selectedOption.value) {
+                const pricePerKg = parseFloat(selectedOption.dataset.price);
+                const amount = parseFloat(amountInput.value) || 0;
+                const total = (pricePerKg * amount).toFixed(2);
+                
+                priceDisplay.textContent = `Total: ₹${total}`;
+                
+                // Show station info
+                stationInfo.style.display = 'block';
+                document.getElementById('distance').textContent = selectedOption.textContent.split(' - ')[1];
+                document.getElementById('waitTime').textContent = selectedOption.dataset.wait;
+            } else {
+                priceDisplay.textContent = 'Select station to see price';
+                stationInfo.style.display = 'none';
+            }
+        }
+
+        stationSelect.addEventListener('change', updatePrice);
+        amountInput.addEventListener('input', updatePrice);
+
+        // Form submission
+        const bookingForm = document.getElementById('bookingForm');
+        const modal = document.getElementById('confirmationModal');
+
+        bookingForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const selectedOption = stationSelect.options[stationSelect.selectedIndex];
+            const pricePerKg = parseFloat(selectedOption.dataset.price);
+            const amount = parseFloat(amountInput.value);
+            const total = (pricePerKg * amount).toFixed(2);
+            const bookingId = 'FUN' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            // Fill modal
+            document.getElementById('bookingId').textContent = bookingId;
+            document.getElementById('modalStation').textContent = selectedOption.textContent.split(' - ')[0];
+            document.getElementById('modalAmount').textContent = amount;
+            document.getElementById('modalPrice').textContent = total;
+            document.getElementById('modalDateTime').textContent = new Date(datetimeInput.value).toLocaleString();
+            document.getElementById('modalVehicle').textContent = document.getElementById('vehicle').value;
+            
+            modal.classList.add('active');
+            bookingForm.reset();
+            updatePrice();
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Close modal on outside click
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
 </html>
